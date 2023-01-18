@@ -78,10 +78,6 @@
 
 
 @section('content')
-@php
-    echo getcwd();
-
-@endphp
 <div class=" page-content page-breadcrumb d-none d-sm-flex align-items-center mb-3">
     </hr>
     <div class="breadcrumb-title pe-3">@lang('site.documents')</div>
