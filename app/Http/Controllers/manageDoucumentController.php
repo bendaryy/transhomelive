@@ -206,7 +206,7 @@ class manageDoucumentController extends Controller
         // End Bank payment
 
         $trnsformed = json_encode($invoice, JSON_UNESCAPED_UNICODE);
-        $myFileToJson = fopen('https://e-invoice.volmr.com\EInvoicing\SourceDocumentJson.json', "w") or die("unable to open file");
+        $myFileToJson = fopen('https://srv145.hstgr.io:7443/e04db18cabbf77aa/files/public_html/e-invoice\EInvoicing\SourceDocumentJson.json', "w") or die("unable to open file");
         fwrite($myFileToJson, $trnsformed);
         return redirect()->route('cer');
 
@@ -401,7 +401,7 @@ class manageDoucumentController extends Controller
         // End Bank payment
 
         $trnsformed = json_encode($invoice, JSON_UNESCAPED_UNICODE);
-        $myFileToJson = fopen('https://e-invoice.volmr.com\EInvoicing\SourceDocumentJson.json', "w") or die("unable to open file");
+        $myFileToJson = fopen('https://srv145.hstgr.io:7443/e04db18cabbf77aa/files/public_html/e-invoice\EInvoicing\SourceDocumentJson.json', "w") or die("unable to open file");
         fwrite($myFileToJson, $trnsformed);
         return redirect()->route('cer');
 
@@ -600,9 +600,9 @@ class manageDoucumentController extends Controller
         // End Bank payment
 
         $trnsformed = json_encode($invoice, JSON_UNESCAPED_UNICODE);
-        $myFileToJson = fopen('https://e-invoice.volmr.com\EInvoicing\SourceDocumentJson.json', "w") or die("unable to open file");
+        $myFileToJson = fopen('https://srv145.hstgr.io:7443/e04db18cabbf77aa/files/public_html/e-invoice\EInvoicing\SourceDocumentJson.json', "w") or die("unable to open file");
         fwrite($myFileToJson, $trnsformed);
-         $path = 'https://e-invoice.volmr.com\EInvoicing\SourceDocumentJson.json';
+         $path = 'https://srv145.hstgr.io:7443/e04db18cabbf77aa/files/public_html/e-invoice\EInvoicing\SourceDocumentJson.json';
         $fullDraftFile = file_get_contents($path);
 
         $draftInvoice = new DraftInvoice();
@@ -630,14 +630,14 @@ class manageDoucumentController extends Controller
     {
         $data = DraftInvoice::find($id)['jsondata'];
         $trnsformed = json_encode($data, JSON_UNESCAPED_UNICODE);
-        $myFileToJson = fopen('https://e-invoice.volmr.com\EInvoicing\SourceDocumentJson.json', "w") or die("unable to open file");
+        $myFileToJson = fopen('https://srv145.hstgr.io:7443/e04db18cabbf77aa/files/public_html/e-invoice\EInvoicing\SourceDocumentJson.json', "w") or die("unable to open file");
         fwrite($myFileToJson, $trnsformed);
-        $path = 'https://e-invoice.volmr.com\EInvoicing\SourceDocumentJson.json';
+        $path = 'https://srv145.hstgr.io:7443/e04db18cabbf77aa/files/public_html/e-invoice\EInvoicing\SourceDocumentJson.json';
         $fullDraftFile = file_get_contents($path);
         $obj = json_decode($fullDraftFile, true);
         $datetime = $obj['dateTimeIssued'] = date('Y-m-d') . 'T' . date('H:i:s') . 'Z';
         $trnsformed = json_encode($obj, JSON_UNESCAPED_UNICODE);
-        $myFileToJson = fopen('https://e-invoice.volmr.com\EInvoicing\SourceDocumentJson.json', "w") or die("unable to open file");
+        $myFileToJson = fopen('https://srv145.hstgr.io:7443/e04db18cabbf77aa/files/public_html/e-invoice\EInvoicing\SourceDocumentJson.json', "w") or die("unable to open file");
         $file = fwrite($myFileToJson, $trnsformed);
         // return $obj;
 
@@ -764,11 +764,11 @@ class manageDoucumentController extends Controller
     public function openBat()
     {
 
-        shell_exec('https://e-invoice.volmr.com\EInvoicing/SubmitInvoices2.bat');
-        $path = 'https://e-invoice.volmr.com\EInvoicing/FullSignedDocument.json';
-        $path2 = 'https://e-invoice.volmr.com\EInvoicing/Cades.txt';
-        $path3 = 'https://e-invoice.volmr.com\EInvoicing/CanonicalString.txt';
-        $path4 = 'https://e-invoice.volmr.com\EInvoicing/SourceDocumentJson.json';
+        shell_exec('https://srv145.hstgr.io:7443/e04db18cabbf77aa/files/public_html/e-invoice\EInvoicing/SubmitInvoices2.bat');
+        $path = 'https://srv145.hstgr.io:7443/e04db18cabbf77aa/files/public_html/e-invoice\EInvoicing/FullSignedDocument.json';
+        $path2 = 'https://srv145.hstgr.io:7443/e04db18cabbf77aa/files/public_html/e-invoice\EInvoicing/Cades.txt';
+        $path3 = 'https://srv145.hstgr.io:7443/e04db18cabbf77aa/files/public_html/e-invoice\EInvoicing/CanonicalString.txt';
+        $path4 = 'https://srv145.hstgr.io:7443/e04db18cabbf77aa/files/public_html/e-invoice\EInvoicing/SourceDocumentJson.json';
 
         $fullSignedFile = file_get_contents($path);
 
