@@ -122,9 +122,9 @@
                         <li> <a href="{{ route('receivedInvoices', '1') }}">
                                 <i class="bx bx-right-arrow-alt"></i>@lang('site.received_documents')</a>
                         </li>
-                        <li> <a href="{{ route('createInvoice') }}">
+                        {{-- <li> <a href="{{ route('createInvoice') }}">
                                 <i class="bx bx-right-arrow-alt"></i>اضافة وثيقة جديدة</a>
-                        </li>
+                        </li> --}}
                         {{-- <li> <a href="{{ route('createInvoiceDollar') }}">
                                 <i class="bx bx-right-arrow-alt"></i>اضافة وثيقة بالدولار</a>
                         </li> --}}

@@ -110,12 +110,12 @@ Route::group(
 
             Route::get('sentInvoices/{id}', [manageDoucumentController::class, 'sentInvoices'])->name('sentInvoices');
             Route::get('receivedInvoices/{id}', [manageDoucumentController::class, 'receivedInvoices'])->name('receivedInvoices');
-            Route::get('createInvoice', [manageDoucumentController::class, 'createInvoice'])->name('createInvoice');
-            Route::get('createInvoice/create2', [manageDoucumentController::class, 'createInvoice2'])->name('createInvoice2');
-            Route::get('createInvoiceDollar', [manageDoucumentController::class, 'createInvoiceDollar'])->name('createInvoiceDollar');
-            Route::get('createInvoiceDollar2', [manageDoucumentController::class, 'createInvoiceDollar2'])->name('createInvoiceDollar2');
-            Route::get('testInvoice', [manageDoucumentController::class, 'createInvoice3'])->name('createInvoice3');
-            Route::get('testInvoice/test2', [manageDoucumentController::class, 'createInvoice4'])->name('createInvoice4');
+            // Route::get('createInvoice', [manageDoucumentController::class, 'createInvoice'])->name('createInvoice');
+            // Route::get('createInvoice/create2', [manageDoucumentController::class, 'createInvoice2'])->name('createInvoice2');
+            // Route::get('createInvoiceDollar', [manageDoucumentController::class, 'createInvoiceDollar'])->name('createInvoiceDollar');
+            // Route::get('createInvoiceDollar2', [manageDoucumentController::class, 'createInvoiceDollar2'])->name('createInvoiceDollar2');
+            // Route::get('testInvoice', [manageDoucumentController::class, 'createInvoice3'])->name('createInvoice3');
+            // Route::get('testInvoice/test2', [manageDoucumentController::class, 'createInvoice4'])->name('createInvoice4');
 
 // send invoice
             Route::post('storeInvoice', [manageDoucumentController::class, 'invoice'])->name('storeInvoice');
