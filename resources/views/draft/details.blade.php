@@ -327,7 +327,7 @@
                         </tbody>
 
                     </table>
-                    <div class="text-center">
+                    {{-- <div class="text-center">
                         <form action="{{ route('sendDraftData', $id) }}" method="post">
                             @csrf
                             @method('post')
@@ -341,7 +341,7 @@
                         </form>
                         <button disabled style="display: none" class="btn btn-primary" id="disabledButton">جارى
                             الإرسال...</button>
-                    </div>
+                    </div> --}}
 
                 </div>
             </div>
