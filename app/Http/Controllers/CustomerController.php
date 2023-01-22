@@ -57,7 +57,8 @@ class CustomerController extends Controller
             'buildingNumber' => 'required',
         ]);
 
-        Customer::create($request->all());
+       Customer::create(array_merge($request->all(), ['user_taxid' => auth()->user()->details->company_id]));
+
 
         session()->flash('message', 'Created Successfully');
 
