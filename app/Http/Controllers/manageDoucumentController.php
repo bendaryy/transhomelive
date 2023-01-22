@@ -991,6 +991,23 @@ class manageDoucumentController extends Controller
         return response($showPdf)->header('Content-Type', 'application/pdf');
     }
 
+    public function showPdfInvoiceEnglish($uuid)
+    {
+        $response = Http::asForm()->post("$this->url1/connect/token", [
+            'grant_type' => 'client_credentials',
+            'client_id' => auth()->user()->details->client_id,
+            'client_secret' => auth()->user()->details->client_secret,
+            'scope' => "InvoicingAPI",
+        ]);
+
+        $showPdf = Http::withHeaders([
+            "Authorization" => 'Bearer ' . $response['access_token'],
+            "Accept-Language" => 'en',
+        ])->get("$this->url2/api/v1/documents/" . $uuid . "/pdf");
+
+        return response($showPdf)->header('Content-Type', 'application/pdf');
+    }
+
     public function cancelDocument($uuid)
     {
         $response = Http::asForm()->post("$this->url1/connect/token", [

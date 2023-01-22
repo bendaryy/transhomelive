@@ -55,7 +55,7 @@
                                 <th>@lang('site.internalid') </th>
                                 <th>@lang('site.doc_view')</th>
                                 <th>@lang('site.doc_Download')</th>
-                                {{-- <th>تحميل الفاتورة </th> --}}
+                                <th>تحميل الفاتورة انجليزى </th>
                                 <th>@lang('site.doc_cancel')</th>
                             </tr>
                         </thead>
@@ -91,10 +91,11 @@
                                         </td>
                                         <td><a href="{{ route('pdf', $invoice['uuid']) }}" class="btn btn-info"
                                                 target="_blank"> @lang('site.download') </a></td>
+                                        <td><a href="{{ route('pdfEnglish', $invoice['uuid']) }}" class="btn btn-info"
+                                                target="_blank"> تحميل الفاتورة pdf انجليزى </a></td>
 
                                         <td>
-                                            <form action="{{ route('cancelDocument', $invoice['uuid']) }}"
-                                                method="post">
+                                            <form action="{{ route('cancelDocument', $invoice['uuid']) }}" method="post">
                                                 @csrf
                                                 @method('PUT')
                                                 <button class="btn btn-danger" type="submit"
@@ -115,15 +116,16 @@
                         {{-- {{ $allMeta['totalPages'] }} --}}
 
                         <ul class="pagination">
-                            <li class="page-item"><a class="page-link" {{ $id == 1 ?'style=display:none' :''}}
-                                    href="{{ route('sentInvoices',$id - 1) }}">السابق</a></li>
+                            <li class="page-item"><a class="page-link" {{ $id == 1 ? 'style=display:none' : '' }}
+                                    href="{{ route('sentInvoices', $id - 1) }}">السابق</a></li>
                             @for ($i = 1; $i <= $allMeta['totalPages']; $i++)
                                 <li class="page-item"><a class="page-link"
                                         {{ $i == $id ? 'style=background-color:#CCC' : '' }}
                                         href="{{ route('sentInvoices', $i) }}">{{ $i }}</a></li>
                             @endfor
                             <li class="page-item"><a class="page-link"
-                                {{ $id ==  $allMeta['totalPages'] ?'style=display:none' :''}}     href="{{ route('sentInvoices', $id + 1) }}">التالى</a></li>
+                                    {{ $id == $allMeta['totalPages'] ? 'style=display:none' : '' }}
+                                    href="{{ route('sentInvoices', $id + 1) }}">التالى</a></li>
 
 
                         </ul>

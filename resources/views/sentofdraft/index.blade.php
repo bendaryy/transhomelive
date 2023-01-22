@@ -82,6 +82,7 @@
                                 <th>إجمالى الفاتورة</th>
                                 <th>عرض تفاصيل و حالة الفاتورة</th>
                                 <th>عرض الفاتورة pdf</th>
+                                <th>عرض الفاتورة pdf إنجليزى</th>
                                 <th>عرض الفاتورة على بورتال الضرائب </th>
                                 <th>مسح الفاتورة المرسلة</th>
                         </thead>
@@ -156,6 +157,10 @@
                                         </a></td>
                                     <td> <a class="btn btn-success" href="{{ route('pdf', $sent->uuid) }}" target="_blank">
                                             عرض الفاتورة pdf
+                                        </a>
+                                    </td>
+                                     <td> <a class="btn btn-success" href="{{ route('pdfEnglish', $sent->uuid) }}" target="_blank">
+                                            عرض الفاتورة pdf إنجليزى
                                         </a>
                                     </td>
                                     <td><a href="https://invoicing.eta.gov.eg/print/documents/{{ $sent['uuid'] }}/share/{{ $sent['longId'] }} "

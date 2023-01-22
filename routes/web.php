@@ -127,6 +127,7 @@ Route::group(
 // show pdf
 
             Route::get('showPdf/{uuid}', [manageDoucumentController::class, 'showPdfInvoice'])->name('pdf');
+            Route::get('showPdfEnglish/{uuid}', [manageDoucumentController::class, 'showPdfInvoiceEnglish'])->name('pdfEnglish');
 
 // for cancel sent invoices
             Route::put('cancelDocument/{uuid}', [manageDoucumentController::class, 'cancelDocument'])->name('cancelDocument');

@@ -24,7 +24,7 @@
         @if ($invUuid != null)
             @php
 
-                $response = Http::asForm()->post('https://id.preprod.eta.gov.eg/connect/token', [
+                $response = Http::asForm()->post('https://id.eta.gov.eg/connect/token', [
                     'grant_type' => 'client_credentials',
                     'client_id' => auth()->user()->details->client_id,
                     'client_secret' => auth()->user()->details->client_secret,
@@ -34,7 +34,7 @@
 
                 $showInvoice = Http::withHeaders([
                     'Authorization' => 'Bearer ' . $token,
-                ])->get("https://api.preprod.invoicing.eta.gov.eg/api/v1.0/documents/$invUuid/details");
+                ])->get("https://api.invoicing.eta.gov.eg/api/v1.0/documents/$invUuid/details");
 
             @endphp
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
