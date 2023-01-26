@@ -14,11 +14,11 @@
                 </nav>
             </div>
             <div class="ms-auto">
-                <div class="btn-group">
+                {{-- <div class="btn-group">
                     <a href="{{ route('createInvoice') }}" class="btn btn-outline-success px-5 radius-30">
                         <i class="bx bx-message-square-edit mr-1"></i>@lang('site.add-document')</a>
 
-                </div>
+                </div> --}}
             </div>
         </div>
 
