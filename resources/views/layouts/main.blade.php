@@ -116,6 +116,9 @@
                         <div class="menu-title">@lang('site.documents')</div>
                     </a>
                     <ul>
+                        <li> <a href="{{ route('allinvoices','1') }}">
+                                <i class="bx bx-right-arrow-alt"></i>جميع الفواتير</a>
+                        </li>
                         <li> <a href="{{ route('sentInvoices', '1') }}">
                                 <i class="bx bx-right-arrow-alt"></i>@lang('site.sent_documents')</a>
                         </li>

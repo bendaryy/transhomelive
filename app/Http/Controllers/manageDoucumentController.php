@@ -14,6 +14,31 @@ class manageDoucumentController extends Controller
     public $url1 = "https://id.eta.gov.eg";
     public $url2 = "https://api.invoicing.eta.gov.eg";
     // this is for show sent inovices
+
+     public function allInvoices($id){
+
+          $response = Http::asForm()->post("$this->url1/connect/token", [
+            'grant_type' => 'client_credentials',
+            'client_id' => auth()->user()->details->client_id,
+            'client_secret' => auth()->user()->details->client_secret,
+            'scope' => "InvoicingAPI",
+        ]);
+
+        $showInvoices = Http::withHeaders([
+            "Authorization" => 'Bearer ' . $response['access_token'],
+        ])->get("$this->url2/api/v1.0/documents/search?page=$id&pageSize=50");
+
+        // return $showInvoices;
+
+         $allInvoices = $showInvoices['result'];
+
+        $allMeta = $showInvoices['metadata'];
+        $taxId = auth()->user()->details->company_id;
+
+        return view('invoices.allinvoices', compact('allInvoices', 'allMeta', 'taxId', 'id'));
+
+    }
+
     public function sentInvoices($id)
     {
         $response = Http::asForm()->post("$this->url1/connect/token", [

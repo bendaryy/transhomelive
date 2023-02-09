@@ -106,6 +106,11 @@ Route::group(
 
             Route::get('nontaxx', [main::class, 'nontaxx'])->name('notaxx');
 
+            // show all invoices
+
+Route::get('allInvoices/{id}', [manageDoucumentController::class, 'allInvoices'])->name('allinvoices')->middleware('auth');
+
+
 // all invoice status
 
             Route::get('sentInvoices/{id}', [manageDoucumentController::class, 'sentInvoices'])->name('sentInvoices');
