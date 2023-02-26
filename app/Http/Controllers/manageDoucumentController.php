@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DraftInvoice;
+use App\Models\SentInvoices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
-use App\Models\DraftInvoice;
-use App\Models\SentInvoices;
 
 class manageDoucumentController extends Controller
 {
@@ -15,27 +15,33 @@ class manageDoucumentController extends Controller
     public $url2 = "https://api.invoicing.eta.gov.eg";
     // this is for show sent inovices
 
-     public function allInvoices($id){
-
-          $response = Http::asForm()->post("$this->url1/connect/token", [
+    public function allInvoices()
+    {
+        $response = Http::asForm()->post("$this->url1/connect/token", [
             'grant_type' => 'client_credentials',
             'client_id' => auth()->user()->details->client_id,
             'client_secret' => auth()->user()->details->client_secret,
             'scope' => "InvoicingAPI",
         ]);
 
+        $datefrom = request('datefrom');
+        $dateto = request('dateto');
+        $direction = request('direction');
+        $receiverId = request('receiverId');
+        $status = request('status');
+
         $showInvoices = Http::withHeaders([
             "Authorization" => 'Bearer ' . $response['access_token'],
-        ])->get("$this->url2/api/v1.0/documents/search?page=$id&pageSize=50");
+        ])->get("$this->url2/api/v1.0/documents/search?pageSize=1000&&submissionDateFrom=" . $datefrom . "&submissionDateTo=" . $dateto . "&direction=$direction&receiverId=$receiverId&status=$status");
 
-        // return $showInvoices;
+//  return $showInvoices;
 
-         $allInvoices = $showInvoices['result'];
+        $allInvoices = $showInvoices['result'];
 
         $allMeta = $showInvoices['metadata'];
         $taxId = auth()->user()->details->company_id;
 
-        return view('invoices.allinvoices', compact('allInvoices', 'allMeta', 'taxId', 'id'));
+        return view('invoices.allinvoices', compact('allInvoices', 'allMeta', 'taxId'));
 
     }
 
@@ -352,7 +358,7 @@ class manageDoucumentController extends Controller
                 ],
 
             ];
-             if (floatval($request->t4rate[$i]) > 0) {
+            if (floatval($request->t4rate[$i]) > 0) {
                 $newArray = [
 
                     "taxType" => "T4",
@@ -398,9 +404,7 @@ class manageDoucumentController extends Controller
         ($request->referencesInvoice ? $invoice['references'] = [$request->referencesInvoice] : "");
         // End reference debit or credit note
 
-
-
-         if (floatval($request->totalt4Amount) > 0) {
+        if (floatval($request->totalt4Amount) > 0) {
             $newArray = [
                 "taxType" => "T4",
                 "amount" => floatval($request->totalt4Amount),
@@ -432,13 +436,12 @@ class manageDoucumentController extends Controller
 
     }
 
-
     // save draft invoice
 
-   public function draft(Request $request)
+    public function draft(Request $request)
     {
 
-       $validated = $request->validate([
+        $validated = $request->validate([
             // 'receiverCountry' => 'required',
             // 'receiverCountry' => 'required',
             // 'receiverGovernate' => 'required',
@@ -551,7 +554,7 @@ class manageDoucumentController extends Controller
                 ],
 
             ];
-             if (floatval($request->t4rate[$i]) > 0) {
+            if (floatval($request->t4rate[$i]) > 0) {
                 $newArray = [
 
                     "taxType" => "T4",
@@ -597,9 +600,7 @@ class manageDoucumentController extends Controller
         ($request->referencesInvoice ? $invoice['references'] = [$request->referencesInvoice] : "");
         // End reference debit or credit note
 
-
-
-         if (floatval($request->totalt4Amount) > 0) {
+        if (floatval($request->totalt4Amount) > 0) {
             $newArray = [
                 "taxType" => "T4",
                 "amount" => floatval($request->totalt4Amount),
@@ -627,7 +628,7 @@ class manageDoucumentController extends Controller
         $trnsformed = json_encode($invoice, JSON_UNESCAPED_UNICODE);
         $myFileToJson = fopen('C:\laragon\www\transhome\EInvoicing\SourceDocumentJson.json', "w") or die("unable to open file");
         fwrite($myFileToJson, $trnsformed);
-         $path = 'C:\laragon\www\transhome\EInvoicing\SourceDocumentJson.json';
+        $path = 'C:\laragon\www\transhome\EInvoicing\SourceDocumentJson.json';
         $fullDraftFile = file_get_contents($path);
 
         $draftInvoice = new DraftInvoice();
@@ -640,12 +641,11 @@ class manageDoucumentController extends Controller
 
     }
 
-
     // show all drafts of invoices
 
     public function showDraft()
     {
-        $allDraft = DraftInvoice::where('tax_id',auth()->user()->details->company_id)->orderBy('id', 'desc')->paginate(100);
+        $allDraft = DraftInvoice::where('tax_id', auth()->user()->details->company_id)->orderBy('id', 'desc')->paginate(100);
         return view('draft.index', compact('allDraft'));
     }
 
@@ -680,18 +680,17 @@ class manageDoucumentController extends Controller
 
     // delete invoice from drafts that is sent or no need to it
 
-     public function deleteDraft($id)
+    public function deleteDraft($id)
     {
         $draft = DraftInvoice::find($id);
         $draft->delete();
         return redirect()->route('showDraft')->with('error', 'تم مسح الفاتورة بنجاح ');
     }
 
-
     // this is sent invoices that show our data to user
-     public function SentInvoicesFromDraft()
+    public function SentInvoicesFromDraft()
     {
-        $allSent = SentInvoices::where('tax_id',auth()->user()->details->company_id)->orderBy('id', 'desc')->paginate(100);
+        $allSent = SentInvoices::where('tax_id', auth()->user()->details->company_id)->orderBy('id', 'desc')->paginate(100);
         // return $allSent;
         // foreach($allSent as $all){
         //     echo $all;
@@ -725,11 +724,11 @@ class manageDoucumentController extends Controller
             // $datefrom = $request->datefrom;
             // $dateto = $request->dateto;
             if ($request->datefrom && $request->dateto && $request->freetext) {
-                $query->where('tax_id',auth()->user()->details->company_id)->where('jsondata', "like", "%$freetext%")->whereBetween('created_at', [$datefrom, $dateto])->orWhere('uuid','like',"%$freetext%");
-            }elseif($request->datefrom && $request->dateto){
-                $query->where('tax_id',auth()->user()->details->company_id)->whereBetween('created_at', [$datefrom, $dateto]);
-            }elseif($request->freetext && !null  ){
-                $query->where('tax_id',auth()->user()->details->company_id)->where('jsondata', "like", "%$freetext%")->orWhere('uuid','like',"%$freetext%");
+                $query->where('tax_id', auth()->user()->details->company_id)->where('jsondata', "like", "%$freetext%")->whereBetween('created_at', [$datefrom, $dateto])->orWhere('uuid', 'like', "%$freetext%");
+            } elseif ($request->datefrom && $request->dateto) {
+                $query->where('tax_id', auth()->user()->details->company_id)->whereBetween('created_at', [$datefrom, $dateto]);
+            } elseif ($request->freetext && !null) {
+                $query->where('tax_id', auth()->user()->details->company_id)->where('jsondata', "like", "%$freetext%")->orWhere('uuid', 'like', "%$freetext%");
             }
             // $query->orWhereBetween('created_at', [$datefrom, $dateto])->where('jsondata', "like", "%" . $freetext . "%");
         })->orderBy('created_at', 'desc')->get();
@@ -773,16 +772,14 @@ class manageDoucumentController extends Controller
 
     }
 
-
     // this is for delete invoice that i was sent before
 
-     public function deleteSentInv($id)
+    public function deleteSentInv($id)
     {
         $deletesent = SentInvoices::find($id);
         $deletesent->delete();
         return redirect()->route('sentofdraft')->with('error', 'تم مسح الفاتورة المرسلة بنجاح ');
     }
-
 
 // this function for signature
 
@@ -809,7 +806,7 @@ class manageDoucumentController extends Controller
             "Content-Type" => "application/json",
         ])->withBody($fullSignedFile, "application/json")->post("$this->url2/api/v1/documentsubmissions");
 
-      if ($invoice['submissionId'] == !null) {
+        if ($invoice['submissionId'] == !null) {
             // if ($invoice) {
             $sentInvoices = new SentInvoices();
             $sentInvoices->uuid = $invoice['acceptedDocuments'][0]['uuid'];
@@ -873,7 +870,7 @@ class manageDoucumentController extends Controller
         $unittypes = DB::table('unittypes')->get();
         $allCompanies = DB::table('companies2')->get();
         $taxTypes = DB::table('taxtypes')->get();
-        return view('invoices.createInvoice2', compact('allCompanies', 'codes', 'ActivityCodes', 'taxTypes', 'products','unittypes'));
+        return view('invoices.createInvoice2', compact('allCompanies', 'codes', 'ActivityCodes', 'taxTypes', 'products', 'unittypes'));
     }
 
     // this function for Fill  the customer information
@@ -1053,9 +1050,9 @@ class manageDoucumentController extends Controller
         );
         // return ($cancel);
         if ($cancel->ok()) {
-            return redirect()->route('sentInvoices',"1")->with('success', 'تم تقديم طلب الغاء الفاتورة بنجاح سيتم الموافقة او الرفض فى خلال 7 ايام');
+            return redirect()->route('sentInvoices', "1")->with('success', 'تم تقديم طلب الغاء الفاتورة بنجاح سيتم الموافقة او الرفض فى خلال 7 ايام');
         } else {
-            return redirect()->route('sentInvoices',"1")->with('error', $cancel['error']['details'][0]['message']);
+            return redirect()->route('sentInvoices', "1")->with('error', $cancel['error']['details'][0]['message']);
         }
     }
 
@@ -1079,9 +1076,9 @@ class manageDoucumentController extends Controller
         );
         // return ($cancel);
         if ($cancel->ok()) {
-            return redirect()->route('receivedInvoices','1')->with('success', 'تم تقديم طلب رفض الفاتورة بنجاح سيتم الموافقة او الرفض فى خلال 7 ايام');
+            return redirect()->route('receivedInvoices', '1')->with('success', 'تم تقديم طلب رفض الفاتورة بنجاح سيتم الموافقة او الرفض فى خلال 7 ايام');
         } else {
-            return redirect()->route('receivedInvoices','1')->with('error', $cancel['error']['details'][0]['message']);
+            return redirect()->route('receivedInvoices', '1')->with('error', $cancel['error']['details'][0]['message']);
         }
 
     }
